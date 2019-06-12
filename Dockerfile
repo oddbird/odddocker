@@ -1,6 +1,10 @@
 # ================ PYTHON
 FROM python:3.7
 
+# Python context setup:
+RUN pip install --upgrade pip
+RUN pip install pipenv
+
 # ================ JAVASCRIPT
 # System setup:
 RUN apt-get update && apt-get install -y gettext redis-tools
