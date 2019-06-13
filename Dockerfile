@@ -1,13 +1,15 @@
 # ================ PYTHON
 FROM python:3.7
 
+# System setup:
+RUN apt-get update && apt-get install -y gettext redis-tools
+RUN apk add ca-certificates
+
 # Python context setup:
 RUN pip install --upgrade pip
 RUN pip install pipenv
 
 # ================ JAVASCRIPT
-# System setup:
-RUN apt-get update && apt-get install -y gettext redis-tools
 # The following taken from https://github.com/nodejs/docker-node/blob/master/10/stretch/Dockerfile
 RUN groupadd --gid 1000 node \
   && useradd --uid 1000 --gid node --shell /bin/bash --create-home node
