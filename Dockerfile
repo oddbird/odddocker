@@ -2,7 +2,7 @@
 FROM python:3.7
 
 # System setup:
-RUN apt-get update && apt-get install -y gettext redis-tools ca-certificates
+RUN apt-get update && apt-get install -y gettext redis-tools ca-certificates && apt-get clean
 
 # Python context setup:
 RUN pip install --upgrade pip
