@@ -1,5 +1,5 @@
 # ================ PYTHON
-FROM python:3.7
+FROM python:3.7.5-slim
 
 # System setup:
 RUN apt-get update && apt-get install -y gettext redis-tools ca-certificates && apt-get clean
