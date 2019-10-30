@@ -2,7 +2,10 @@
 FROM python:3.8.0
 
 # System setup:
-RUN apt-get update && apt-get install -y --no-install-recommends gettext redis-tools && apt-get clean
+RUN apt-get update \
+  && apt-get install -y gettext redis-tools --no-install-recommends \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Python context setup:
 RUN pip install --upgrade pip
