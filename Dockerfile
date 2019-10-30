@@ -2,7 +2,7 @@
 FROM python:3.8.0-slim
 
 # System setup:
-RUN apt-get update && apt-get install -y gettext redis-tools ca-certificates gcc postgresql && apt-get clean
+RUN apt-get update && apt-get install -y gettext redis-tools ca-certificates gcc libpq-dev && apt-get clean
 
 # Python context setup:
 RUN pip install --upgrade pip
