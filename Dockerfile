@@ -1,5 +1,5 @@
 # ================ PYTHON
-FROM python:3.8.0
+FROM python:3.8.1
 
 # System setup:
 RUN apt-get update \
