@@ -8,9 +8,13 @@ RUN apt-get update \
     gpg \
     gpg-agent \
     curl \
+    wget \
     gettext \
     redis-tools \
     xz-utils \
+    # To build some dependencies:
+    gcc \
+    libc-dev \
     --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
