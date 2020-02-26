@@ -1,9 +1,17 @@
 # ================ PYTHON
-FROM python:3.8.1
+FROM python:3.8.2-slim
 
 # System setup:
 RUN apt-get update \
-  && apt-get install -y gettext redis-tools --no-install-recommends \
+  && apt-get install -y \
+    dirmngr \
+    gpg \
+    gpg-agent \
+    curl \
+    gettext \
+    redis-tools \
+    xz-utils \
+    --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
