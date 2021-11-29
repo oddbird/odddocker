@@ -1,14 +1,12 @@
 name: Build images
 
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - 'v*'
   pull_request:
     branches:
       - master
+  schedule:
+    # Build everyday at 6:00 UTC
+    - cron:  '0 6 * * *'
 
 jobs:
   build:
@@ -16,16 +14,19 @@ jobs:
     strategy:
       matrix:
         suffix: ['', '-headless']
+        python: ['3.10', '3.9', '3.8']
+        node: ['16', '14']
     steps:
       - uses: actions/checkout@v2
+      - name: Set tag
+        run: |
+          echo "TAG=py${{ matrix.python }}-node${{ matrix.node }}${{ matrix.suffix }}" >> $GITHUB_ENV
       - id: meta
         uses: docker/metadata-action@v3
         with:
           images: oddbirds/pyjs
           tags: |
-            type=ref,event=branch,suffix=${{ matrix.suffix }}
-            type=ref,event=tag,suffix=${{ matrix.suffix }}
-            type=ref,event=pr,suffix=${{ matrix.suffix }}
+            type=raw,value=${{ env.TAG }}
       - uses: docker/setup-qemu-action@v1
       - id: buildx
         uses: docker/setup-buildx-action@v1
@@ -42,5 +43,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=oddbirds/pyjs:buildcache${{ matrix.suffix }}
-          cache-to: type=registry,ref=oddbirds/pyjs:buildcache${{ matrix.suffix }},mode=max
+          cache-from: type=registry,ref=oddbirds/pyjs:buildcache-${{ env.TAG }}
+          cache-to: type=registry,ref=oddbirds/pyjs:buildcache-${{ env.TAG }},mode=max
