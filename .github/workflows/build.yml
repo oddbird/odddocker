@@ -21,6 +21,11 @@ jobs:
       - name: Set tag
         run: |
           echo "TAG=py${{ matrix.python }}-node${{ matrix.node }}${{ matrix.suffix }}" >> $GITHUB_ENV
+      - name: Prepare Dockerfile
+        if: matrix.suffix == '-headless'
+        run: |
+          mv Dockerfile original.txt
+          cat original.txt headless.txt > Dockerfile
       - id: meta
         uses: docker/metadata-action@v3
         with:
@@ -39,7 +44,6 @@ jobs:
         with:
           context: .
           push: true
-          file: Dockerfile${{ matrix.suffix }}
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

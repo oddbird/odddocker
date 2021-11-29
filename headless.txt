@@ -1,4 +1,4 @@
-FROM oddbirds/pyjs:latest
+# The contents of this file are automatically appended to Dockerfile
 
 # Headless Chrome for PDF generation:
 ENV CHROME_BRANCH stable
