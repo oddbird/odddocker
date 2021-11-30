@@ -24,7 +24,7 @@ RUN apt-get install -y nodejs --no-install-recommends \
 # https://classic.yarnpkg.com/en/docs/install
 RUN npm install --global yarn npm@latest \
   # smoke test
-  && yarn --version
+  && yarn --version \
   && npm --version
 
 # ================ ENVIRONMENT
