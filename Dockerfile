@@ -9,7 +9,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Python context setup:
-RUN pip install --upgrade pip pip-tools
+RUN pip install --no-cache-dir --upgrade pip pip-tools
 
 # ================ NODE
 # https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions
@@ -18,14 +18,13 @@ RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
 RUN apt-get install -y nodejs --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
-  # smoke tests
   && node --version
 
+# Upgrade npm itself as the included version might be old
+RUN npm install --global npm@latest && npm --version
+
 # https://classic.yarnpkg.com/en/docs/install
-RUN npm install --global yarn npm@latest \
-  # smoke test
-  && yarn --version \
-  && npm --version
+RUN npm install --global yarn && yarn --version
 
 # ================ ENVIRONMENT
 ENV PYTHONUNBUFFERED 1
