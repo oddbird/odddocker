@@ -1,5 +1,5 @@
 # ================ PYTHON
-ARG PYTHON_VERSION=3.9
+ARG PYTHON_VERSION
 FROM python:$PYTHON_VERSION
 
 # System setup:
@@ -11,20 +11,21 @@ RUN apt-get update \
 # Python context setup:
 RUN pip install --upgrade pip pip-tools
 
-# ================ JAVASCRIPT
-ARG NODE_VERSION=14
-
-RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
+# ================ NODE
+# https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions
+ARG NODE_VERSION
+RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
 RUN apt-get install -y nodejs --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   # smoke tests
-  && node --version \
-  && npm --version
+  && node --version
 
-RUN npm install --global yarn \
+# https://classic.yarnpkg.com/en/docs/install
+RUN npm install --global yarn npm@latest \
   # smoke test
   && yarn --version
+  && npm --version
 
 # ================ ENVIRONMENT
 ENV PYTHONUNBUFFERED 1

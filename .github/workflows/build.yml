@@ -1,6 +1,9 @@
 name: Build images
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -20,7 +23,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set tag
         run: |
-          echo "TAG=py${{ matrix.python }}-node${{ matrix.node }}${{ matrix.suffix }}" >> $GITHUB_ENV
+          $TAG=py${{ matrix.python }}-node${{ matrix.node }}${{ matrix.suffix }}
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          # Append a PR identifier if necessary
+          $PR="${{ github.event.pull_request.number }}"
+          if [ ! -z "$PR" ]; then echo "TAG=$TAG-pr$PR" >> $GITHUB_ENV; fi
       - name: Prepare Dockerfile
         if: matrix.suffix == '-headless'
         run: |
