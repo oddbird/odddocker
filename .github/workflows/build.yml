@@ -23,11 +23,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set tag
         run: |
-          $TAG=py${{ matrix.python }}-node${{ matrix.node }}${{ matrix.suffix }}
-          echo "TAG=$TAG" >> $GITHUB_ENV
+          TAG="py${{ matrix.python }}-node${{ matrix.node }}${{ matrix.suffix }}"
           # Append a PR identifier if necessary
-          $PR="${{ github.event.pull_request.number }}"
-          if [ ! -z "$PR" ]; then echo "TAG=$TAG-pr$PR" >> $GITHUB_ENV; fi
+          PR="${{ github.event.pull_request.number }}"
+          if [ ! -z "$PR" ]; then TAG="$TAG-pr$PR" >> $GITHUB_ENV; fi
+          echo "TAG=$TAG" >> $GITHUB_ENV
       - name: Prepare Dockerfile
         if: matrix.suffix == '-headless'
         run: |
