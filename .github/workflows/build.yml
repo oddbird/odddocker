@@ -1,0 +1,75 @@
+name: Build & push images
+
+on:
+  # Build new images immediately after a push to master
+  push:
+    branches:
+      - master
+  # Build PR images with a `-pr###` suffix to test
+  pull_request:
+    branches:
+      - master
+  # Build every day at 6:00 UTC to keep Python and Node minor versions updated
+  schedule:
+    - cron:  '0 6 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        suffix: ['', '-headless']
+        python: ['3.10', '3.9']
+        node: ['16', '14']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure tag & caching
+        run: |
+          # Set tag
+          TAG="py${{ matrix.python }}-node${{ matrix.node }}${{ matrix.suffix }}"
+          # Append a PR identifier if necessary
+          PR="${{ github.event.pull_request.number }}"
+          if [ ! -z "$PR" ]; then TAG="$TAG-pr$PR"; fi
+          echo "TAG=$TAG" >> $GITHUB_ENV
+
+          # Disable cache-from in scheduled runs to ensure fresh minor versions
+          # every day for both Python and Node
+          if [ "${{ github.event_name }}" = "schedule" ]
+          then
+            CACHEFROM=""
+          else
+            CACHEFROM="type=registry,ref=oddbirds/pyjs:buildcache-$TAG"
+          fi
+          echo "CACHEFROM=$CACHEFROM" >> $GITHUB_ENV
+
+      - name: Prepare Dockerfile
+        if: matrix.suffix == '-headless'
+        run: |
+          mv Dockerfile original.txt
+          cat original.txt headless.txt > Dockerfile
+      - name: Prepare image metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: oddbirds/pyjs
+          tags: |
+            type=raw,value=${{ env.TAG }}
+      - uses: docker/setup-qemu-action@v1
+      - uses: docker/setup-buildx-action@v1
+      - uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: ${{ env.CACHEFROM }}
+          cache-to: type=registry,ref=oddbirds/pyjs:buildcache-${{ env.TAG }},mode=max
+          build-args: |
+            NODE_VERSION=${{ matrix.node }}
+            PYTHON_VERSION=${{ matrix.python }}
