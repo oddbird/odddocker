@@ -1,14 +1,16 @@
-name: Build images
+name: Build & push images
 
 on:
+  # Build new images immediately after a push to master
   push:
     branches:
       - master
+  # Build PR images with a `-pr###` suffix to test
   pull_request:
     branches:
       - master
+  # Build every day at 6:00 UTC to keep Python and Node minor versions updated
   schedule:
-    # Build everyday at 6:00 UTC
     - cron:  '0 6 * * *'
 
 jobs:
@@ -33,7 +35,8 @@ jobs:
         run: |
           mv Dockerfile original.txt
           cat original.txt headless.txt > Dockerfile
-      - id: meta
+      - name: Prepare image metadata
+        id: meta
         uses: docker/metadata-action@v3
         with:
           images: oddbirds/pyjs
