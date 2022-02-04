@@ -73,8 +73,12 @@ jobs:
           build-args: |
             NODE_VERSION=${{ matrix.node }}
             PYTHON_VERSION=${{ matrix.python }}
-      - name: Push commit to keep this workflow alive
-        run: |
+
+  keep-alive:
+    name: Push commit to keep this workflow alive
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
           FIFTY_DAYS=4320000 # In seconds
           TIME_SINCE_COMMIT=$(expr $(date +%s) - $(git log -1 --format=%ct))
           if [ "$TIME_SINCE_COMMIT" -gt "$FIFTY_DAYS" ]; then
