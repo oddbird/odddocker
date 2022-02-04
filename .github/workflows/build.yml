@@ -78,6 +78,7 @@ jobs:
     name: Push commit to keep this workflow alive
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - run: |
           FIFTY_DAYS=4320000 # In seconds
           TIME_SINCE_COMMIT=$(expr $(date +%s) - $(git log -1 --format=%ct))
