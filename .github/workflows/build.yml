@@ -73,3 +73,15 @@ jobs:
           build-args: |
             NODE_VERSION=${{ matrix.node }}
             PYTHON_VERSION=${{ matrix.python }}
+      - name: Push commit to keep this workflow alive
+        run: |
+          FIFTY_DAYS=4320000 # In seconds
+          TIME_SINCE_COMMIT=$(expr $(date +%s) - $(git log -1 --format=%ct))
+          if [ "$TIME_SINCE_COMMIT" -gt "$FIFTY_DAYS" ]; then
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git commit --allow-empty -m "Keep alive commit"
+            git push -f origin ${{ github.ref_name }}:gh-actions-keep-alive
+          else
+            echo "Keep-alive commit not needed... yet"
+          fi
