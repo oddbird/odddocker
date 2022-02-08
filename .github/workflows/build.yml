@@ -51,7 +51,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/oddbird/pyjs
           tags: |
             type=raw,value=${{ env.TAG }}
       - uses: docker/setup-qemu-action@v1
