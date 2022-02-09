@@ -1,17 +1,17 @@
 name: Build & push images
 
 on:
-  # Build new images immediately after a push to master
+  # Build new images immediately after a push to main
   push:
     branches:
-      - master
+      - main
   # Build PR images with a `-pr###` suffix to test
   pull_request:
     branches:
-      - master
+      - main
   # Build every day at 6:00 UTC to keep Python and Node minor versions updated
   schedule:
-    - cron:  '0 6 * * *'
+    - cron: '0 6 * * *'
 
 jobs:
   build:
