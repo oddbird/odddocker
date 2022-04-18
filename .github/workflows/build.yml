@@ -5,10 +5,14 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '.github/**'
   # Build PR images with a `-pr###` suffix to test
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - '.github/**'
   # Build every day at 6:00 UTC to keep Python and Node minor versions updated
   schedule:
     - cron: '0 6 * * *'
