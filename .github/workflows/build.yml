@@ -85,6 +85,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
+          git fetch origin # Fetch remote commits on all branches
           FIFTY_DAYS=4320000 # In seconds
           TIME_SINCE_COMMIT=$(expr $(date +%s) - $(git log --all -1 --format=%ct))
           if [ "$TIME_SINCE_COMMIT" -gt "$FIFTY_DAYS" ]; then
