@@ -14,6 +14,8 @@ on:
   # Build every day at 6:00 UTC to keep Python and Node minor versions updated
   schedule:
     - cron: '0 6 * * *'
+  # Allow running on-demand
+  workflow_dispatch:
 
 jobs:
   build:
