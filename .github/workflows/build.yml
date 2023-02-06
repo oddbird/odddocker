@@ -68,7 +68,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          provenance: false
+          provenance: mode=min,inline-only=true
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
