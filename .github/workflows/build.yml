@@ -1,5 +1,9 @@
 name: Build & push images
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   # Build new images immediately after a push to main
   push:
