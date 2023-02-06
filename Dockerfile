@@ -29,3 +29,5 @@ RUN npm install --global yarn && yarn --version
 # ================ ENVIRONMENT
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
+
+RUN touch test.txt
