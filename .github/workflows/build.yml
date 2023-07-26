@@ -28,7 +28,7 @@ jobs:
       matrix:
         suffix: ['', '-headless']
         python: ['3.11', '3.10', '3.9']
-        node: ['16', '14']
+        node: ['18', '16', '14']
     steps:
       - uses: actions/checkout@v3
       - name: Configure tag & caching
