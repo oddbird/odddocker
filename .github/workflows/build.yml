@@ -30,7 +30,7 @@ jobs:
         python: ['3.11', '3.10', '3.9']
         node: ['18', '16', '14']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Configure tag & caching
         run: |
           # Set tag
@@ -89,7 +89,7 @@ jobs:
     name: Push commit to keep this workflow alive
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           git fetch origin # Fetch remote commits on all branches
           FIFTY_DAYS=4320000 # In seconds
