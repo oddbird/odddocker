@@ -57,7 +57,7 @@ jobs:
           cat original.txt headless.txt > Dockerfile
       - name: Prepare image metadata
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ghcr.io/oddbird/pyjs
           tags: |
