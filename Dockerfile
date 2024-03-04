@@ -6,7 +6,6 @@ FROM python:${PYTHON_VERSION}
 # Node and npm
 COPY --from=node_base /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=node_base /usr/local/bin/node /usr/local/bin/node
-COPY --from=node_base /usr/local/bin/corepack /usr/local/bin/corepack
 COPY --from=node_base /opt/yarn-* /opt/yarn
 RUN ln -s /usr/local/lib/node_modules/corepack/dist/corepack.js /usr/local/bin/corepack
 RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
