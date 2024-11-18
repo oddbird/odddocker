@@ -26,8 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ['3.13', '3.12', '3.11', '3.10']
-        node: ['22', '20', '18']
+        python: ['3.13', '3.12', '3.11']
+        node: ['22', '20']
     steps:
       - uses: actions/checkout@v4
       - name: Configure tag & caching
