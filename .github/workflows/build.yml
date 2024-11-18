@@ -26,15 +26,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        suffix: ['', '-headless']
-        python: ['3.12', '3.11', '3.10', '3.9']
-        node: ['20', '18', '16']
+        python: ['3.13', '3.12', '3.11', '3.10']
+        node: ['22', '20', '18']
     steps:
       - uses: actions/checkout@v4
       - name: Configure tag & caching
         run: |
           # Set tag
-          TAG="py${{ matrix.python }}-node${{ matrix.node }}${{ matrix.suffix }}"
+          TAG="py${{ matrix.python }}-node${{ matrix.node }}"
           # Append a PR identifier if necessary
           PR="${{ github.event.pull_request.number }}"
           if [ ! -z "$PR" ]; then TAG="$TAG-pr$PR"; fi
@@ -49,12 +48,6 @@ jobs:
             CACHEFROM="type=gha"
           fi
           echo "CACHEFROM=$CACHEFROM" >> $GITHUB_ENV
-
-      - name: Prepare Dockerfile
-        if: matrix.suffix == '-headless'
-        run: |
-          mv Dockerfile original.txt
-          cat original.txt headless.txt > Dockerfile
       - name: Prepare image metadata
         id: meta
         uses: docker/metadata-action@v5

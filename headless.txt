@@ -1,6 +1,0 @@
-# The contents of this file are automatically appended to Dockerfile
-
-RUN apt-get update \
-  && apt-get install -y chromium --no-install-recommends \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
