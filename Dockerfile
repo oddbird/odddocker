@@ -12,6 +12,7 @@ RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 RUN ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 RUN ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn
 RUN ln -s /opt/yarn/bin/yarnpkg /usr/local/bin/yarnpkg
+RUN corepack enable
 RUN node --version && npm --version && yarn --version
 
 # System setup:
