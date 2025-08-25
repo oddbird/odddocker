@@ -22,5 +22,5 @@ RUN apt-get update \
 RUN pip install --no-cache-dir --upgrade pip pip-tools
 
 # ================ ENVIRONMENT
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
